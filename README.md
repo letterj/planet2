@@ -1,62 +1,105 @@
-Deploy planet2 app
+<h1> Planet2 App
 
-Prerequites
+**A very simple web service dealing with users and group.**  
 
-This app is deployed into a python virtual environment.  Reference to setup Python Virtual environments http://docs.python-guide.org/en/latest/dev/virtualenvs/
+<h3> Deployment
+
+<h4> Prerequites:
+
+This app is deployed into a python virtual environment.  [Reference](http://docs.python-guide.org/en/latest/dev/virtualenvs/)
 
 
-Create a python vitural environment
+<h4> Create a python vitural environment
 
-$ virtualenv planet2
+    $ virtualenv planet2
 
-Install requisite packages:
+<h4> Install dependent packages:
 
-$ pip install -r requirements.txt
+    $ pip install -r requirements.txt
 
-Create tables:
+<h4> Create tables:
 
-$ python models.py
+    $ python models.py
 
-Run service:
+<h4> Run service:
 
-$ python app.py
+    $ python app.py
 
-Sample requests:
+<h3> Sample requests:
 
-POST /users/<userid>
+**GET /users/_userid_**
+* 200 - OK
+* 404 - _userid_ not found
 
+<pre>
+curl -X GET http://localhost:5000/users/test01
+</pre>
+
+**POST /users/_userid_**
+* 201 - Created
+* 400 - _userid_ already exists
+* 400 - Any of the required parameters not found ("first_name", "last_name", "groups"
+* 404 - an item(group) in the "groups" list is not found
+
+<pre>
 curl -X POST http://localhost:5000/users/test01 \
     -H "Content-Type: application/json" \
     -d '{"first_name" : "Testy", "last_name" : "Tester", "groups" : ["admin", "manager"]}'
+</pre>
 
-DELETE /users/<userid>
+**DELETE /users/_userid_**
+* 204 - Deleted
+* 404 - _userid_ was not found
 
+<pre>
 curl -X DELETE http://localhost:5000/users/test01
+</pre>
 
-PUT /users/<userid>
+**PUT /users/_userid_**
+* 200 - OK
+* 400 - _userid_ was not found
+* 400 - Any of the required parameters not found ("first_name", "last_name", "groups"
+* 404 - an item(group) in the "groups" list is not found
 
+<pre>
 curl -X PUT http://localhost:5000/users/test01 \
     -H "Content-Type: application/json" \
     -d '{"first_name" : "Testie", "last_name" : "Tester", "groups" : ["admin", "manager"]}'
+</pre>
 
-GET /groups/<group name>
+**GET /groups/_group name_**
+* 200 - OK
+* 404 - _group name_ not found
 
+<pre>
 curl -X GET http://localhost:5000/groups/admin
+</pre>
 
-POST /groups/<group name>
+**POST /groups/_group name_**
+* 201 - Created
+* 400 - _group name_ already exists
 
+<pre>
 curl -X POST http://localhost:5000/groups/admin
+</pre>
 
-PUT /groups/<group name>
+**PUT /groups/_group name_**
+* 200 - OK
+* 400 - The required parameter "members" is not present
 
+<pre>
 curl -X PUT http://localhost:5000/groups/admin \
     -H "Content-Type: application/json" \
     -d '{"members" : ["test01", "test03"]}'
+</pre>
 
-DELETE /groups/<group name>
+**DELETE /groups/_group name_**
+* 204 - DELETES the reference to all users in this group
+* 404 - _group name_ not found or no users in this group
 
+<pre>
 curl -X DELETE http://localhost:5000/groups/admin
-
+</pre>
 
 
 
