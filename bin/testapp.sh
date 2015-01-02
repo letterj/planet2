@@ -50,7 +50,7 @@
 #
 #curl -X PUT http://localhost:5000/groups/admin \
 #    -H "Content-Type: application/json" \
-#    -d '{"users" : ["test01", "test03"]}'
+#    -d '{"members" : ["test01", "test03"]}'
 #
 #curl -X PUT http://localhost:5000/groups/admin \
 #    -H "Content-Type: application/json" \

@@ -26,7 +26,7 @@ class UsersAPI(Resource):
       
         u = session.query(User).filter(User.userid == userid).all()
 	if u:
-            abort(404, message="User {} already exists".format(userid))
+            abort(400, message="User {} already exists".format(userid))
 	   
         nu = User(userid, args['first_name'], args['last_name'])
 	session.add(nu)
