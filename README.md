@@ -8,22 +8,32 @@
 
 This app is deployed into a python virtual environment.  [Reference](http://docs.python-guide.org/en/latest/dev/virtualenvs/)
 
+The source code is stored in a public git repository.
 
-<h4> Create a python vitural environment
+<h4> Create a deployment directory:
 
-    $ virtualenv planet2
+    $ mkdir deploy
+
+<h4> Create a python vitural environment and activate it
+
+    $ virtualenv flask
+    $ source flask/bin/activate
+
+<h4> Get the source code from [Git](http://github.com)
+
+    $  git clone http://github.com/letterj/planet2.git
 
 <h4> Install dependent packages:
 
-    $ pip install -r requirements.txt
+    $ pip install -r planet2/requirements.txt
 
 <h4> Create tables:
 
-    $ python models.py
+    $ python planet2/models.py
 
 <h4> Run service:
 
-    $ python app.py
+    $ python planet2/app.py
 
 <h3> Sample requests:
 
