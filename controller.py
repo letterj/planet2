@@ -57,7 +57,7 @@ class UsersAPI(Resource):
                 'groups': glist}
         json_data.append(data)
 
-        return jsonify(items=json_data)
+        return jsonify(json_data)
         
 
     def put(self, userid):
@@ -124,7 +124,7 @@ class GroupsAPI(Resource):
                 'users': userlist},
         json_data.append(data)
 
-        return jsonify(items=json_data)
+        return jsonify(json_data)
 
 
     def put(self, groupid):
