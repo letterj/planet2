@@ -22,18 +22,19 @@ The source code is stored in a public git repository.
 <h4> Get the source code from [Git](http://github.com)
 
     $  git clone http://github.com/letterj/planet2.git
+    $  cd planet2
 
 <h4> Install dependent packages:
 
-    $ pip install -r planet2/requirements.txt
+    $ pip install -r requirements.txt
 
 <h4> Create tables:
 
-    $ python planet2/models.py
+    $ python models.py
 
 <h4> Run service:
 
-    $ python planet2/app.py
+    $ python app.py
 
 <h3> Sample requests:
 

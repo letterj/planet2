@@ -41,23 +41,22 @@ class UsersAPI(Resource):
         return {}, 201
 
     def get(self, userid):
-        json_data = []
+        data = {}
 	glist = []
 
-	u = session.query(User).filter(User.userid == userid).all()
+	u = session.query(User).filter(User.userid == userid).limit(1)
 	if not u:
             abort(404, message="User {} doesn't exist".format(userid))
         ug = session.query(UserGroups).filter(UserGroups.userid == userid).all()
         for col in ug:
             glist.append(col.groupid)
         for col in u:
-            data = {'userid': col.userid,
-                'first name': col.first_name,
-                'last name': col.last_name,
-                'groups': glist}
-        json_data.append(data)
+            data['userid'] = col.userid
+            data['first name'] = col.first_name
+            data['last name'] =  col.last_name
+            data['groups'] =  glist
 
-        return jsonify(json_data)
+        return jsonify(data) 
         
 
     def put(self, userid):
@@ -112,7 +111,7 @@ class GroupsAPI(Resource):
 	
 
     def get(self, groupid):
-	json_data = []
+	data = {}
         userlist = []
         ug = session.query(UserGroups).filter(UserGroups.groupid == groupid).all()
 	if not ug:
@@ -120,11 +119,9 @@ class GroupsAPI(Resource):
 
         for col in ug:
 	    userlist.append(col.userid) 
-        data = {'group': groupid,
-                'users': userlist},
-        json_data.append(data)
+	data[groupid] = userlist
 
-        return jsonify(json_data)
+        return jsonify(data)
 
 
     def put(self, groupid):
