@@ -122,4 +122,4 @@ curl -X GET http://localhost:5000/groups/admin
 curl -X GET http://localhost:5000/groups/work
 curl -X GET http://localhost:5000/groups/nogroup
 
-echo -e "\n\nAll members are removed from the admin group. \n404 for deleting admin members again. \n404 for not finding group. \n404 for group that doesnt exist""
+echo -e "\n\nAll members are removed from the admin group. \n404 for deleting admin members again. \n404 for not finding group. \n404 for group that doesnt exist"
