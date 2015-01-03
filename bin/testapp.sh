@@ -1,72 +1,7 @@
 #! /bin/bash
 #
-#
-#GET /users/<userid>
-#    Returns the matching user record or 404 if none exist.
-#
-#curl -X GET http://localhost:5000/users/test01
 
-#POST /users/<userid>
-#   Creates a new user record. The body of the request should be a valid user
-#    record. POSTs to an existing user should be treated as errors and flagged
-#    with the appropriate HTTP status code.
-#
-#curl -X POST http://localhost:5000/users/test01 \
-#    -H "Content-Type: application/json" \
-#    -d '{"first_name" : "Testy", "last_name" : "Tester", "groups" : ["admin", "manager"]}'
-
-#DELETE /users/<userid>
-#   Deletes a user record. Returns 404 if the user doesn't exist.
-#
-#curl -X DELETE http://localhost:5000/users/test01
-
-#PUT /users/<userid>
-#   Updates an existing user record. The body of the request should be a valid
-#   user record. PUTs to a non-existant user should return a 404.
-#
-#curl -X PUT http://localhost:5000/users/test01 \
-#    -H "Content-Type: application/json" \
-#    -d '{"first_name" : "Testie", "last_name" : "Tester", "groups" : ["admin", "manager"]}'
-#
-#curl -X PUT http://localhost:5000/users/test01 \
-#    -H "Content-Type: application/json" \
-#    -d '{"first_name" : "Testie", "last_name" : "Tester", "groups" : ["admin", "team"]}'
-
-#GET /groups/<group name>
-#    Returns a JSON list of userids containing the members of that group. Should
-#    return a 404 if the group doesn't exist or has no members.
-#
-#curl -X GET http://localhost:5000/groups/admin
-
-#POST /groups/<group name>
-#    Creates a empty group. POSTs to an existing group should be treated as
-#    errors and flagged with the appropriate HTTP status code.
-#
-#curl -X POST http://localhost:5000/groups/admin
-
-#PUT /groups/<group name>
-#    Updates the membership list for the group. The body of the request should 
-#    be a JSON list describing the group's members.
-#
-#curl -X PUT http://localhost:5000/groups/admin \
-#    -H "Content-Type: application/json" \
-#    -d '{"members" : ["test01", "test03"]}'
-#
-#curl -X PUT http://localhost:5000/groups/admin \
-#    -H "Content-Type: application/json" \
-#    -d '{"users" : ["test01", "test03", "test04"]}'
-
-#DELETE /groups/<group name>
-#    Removes all members from the named group. Should return a 404 for unknown 
-#    rgroups.
-#
-#curl -X DELETE http://localhost:5000/groups/admin
-#
-
-
-# Happy Path
-#
-
+# Test Happy Path
 curl -X POST http://localhost:5000/groups/admin
 curl -X POST http://localhost:5000/groups/work
 
@@ -82,12 +17,28 @@ curl -X POST http://localhost:5000/users/test03 \
     -H "Content-Type: application/json" \
     -d '{"first_name" : "Testy", "last_name" : "Tester03", "groups" : ["admin"]}'
 
+# Test Group and User Duplicates.  Test group not found on user post
+curl -X POST http://localhost:5000/groups/work
+
+curl -X POST http://localhost:5000/users/test03 \
+    -H "Content-Type: application/json" \
+    -d '{"first_name" : "Testy", "last_name" : "Tester03", "groups" : ["admin"]}'
+
+curl -X POST http://localhost:5000/users/test10 \
+    -H "Content-Type: application/json" \
+    -d '{"first_name" : "Testy", "last_name" : "Tester03", "groups" : ["admin", "nogroup"]}'
+
+
 curl -X GET http://localhost:5000/users/test01
 curl -X GET http://localhost:5000/users/test02
 curl -X GET http://localhost:5000/users/test03
+curl -X GET http://localhost:5000/users/test10
 curl -X GET http://localhost:5000/groups/admin
 curl -X GET http://localhost:5000/groups/work
 
+echo "\n\nTwo groups and Three users should be created. \nPlus a 404 to great a group and user that already exist and put with group not found.\n\n"
+
+# Happy Path
 curl -X PUT http://localhost:5000/users/test01 \
     -H "Content-Type: application/json" \
     -d '{"first_name" : "Testie", "last_name" : "Tester", "groups" : ["admin", "work"]}'
@@ -96,12 +47,32 @@ curl -X PUT http://localhost:5000/users/test03 \
     -H "Content-Type: application/json" \
     -d '{"first_name" : "Testy", "last_name" : "TesterThree", "groups" : ["admin", "work"]}'
 
+# Test Required Fields
+curl -X PUT http://localhost:5000/users/test03 \
+    -H "Content-Type: application/json" \
+    -d '{"name" : "Testy", "last_name" : "TesterThree", "groups" : ["admin", "work"]}'
+
+curl -X PUT http://localhost:5000/users/test03 \
+    -H "Content-Type: application/json" \
+    -d '{"first_name" : "Testy", "n_ame" : "TesterThree", "groups" : ["admin", "work"]}'
+
+curl -X PUT http://localhost:5000/users/test03 \
+    -H "Content-Type: application/json" \
+    -d '{"first_name" : "Testy", "last_name" : "TesterThree"}'
+
+
 curl -X GET http://localhost:5000/users/test01
 curl -X GET http://localhost:5000/users/test02
 curl -X GET http://localhost:5000/users/test03
 curl -X GET http://localhost:5000/groups/admin
 curl -X GET http://localhost:5000/groups/work
 
+echo "\n\nUsers test01 and test03 should have their names updated. Required fields test\n\n"
+
+# Happy Path
+curl -X DELETE http://localhost:5000/users/test01
+
+# Test Not Found
 curl -X DELETE http://localhost:5000/users/test01
 
 curl -X GET http://localhost:5000/users/test01
@@ -110,6 +81,9 @@ curl -X GET http://localhost:5000/users/test03
 curl -X GET http://localhost:5000/groups/admin
 curl -X GET http://localhost:5000/groups/work
 
+echo "\n\nUser test01 should be deleted then a not found request.\n\n"
+
+# Happy Path
 curl -X POST http://localhost:5000/users/test05 \
     -H "Content-Type: application/json" \
     -d '{"first_name" : "Testy", "last_name" : "Tester05", "groups" : ["work"]}'
@@ -118,16 +92,34 @@ curl -X PUT http://localhost:5000/groups/admin \
     -H "Content-Type: application/json" \
     -d '{"users" : ["test05", "test03"]}'
 
+# Group Put Not Found and User Not Found
+curl -X PUT http://localhost:5000/groups/admin2 \
+    -H "Content-Type: application/json" \
+    -d '{"users" : ["test05", "test03"]}'
+
+curl -X PUT http://localhost:5000/groups/admin \
+    -H "Content-Type: application/json" \
+    -d '{"users" : ["test01", "test03"]}'
+
 curl -X GET http://localhost:5000/users/test05
 curl -X GET http://localhost:5000/users/test02
 curl -X GET http://localhost:5000/users/test03
 curl -X GET http://localhost:5000/groups/admin
 curl -X GET http://localhost:5000/groups/work
 
+echo "\n\nUser test05 added and then placed into the admin group. Test PUT Group and User not found.\n\n"
+
+# Happy Path
 curl -X DELETE http://localhost:5000/groups/admin
+# Group Not Found or no members in a group
+curl -X DELETE http://localhost:5000/groups/admin
+curl -X DELETE http://localhost:5000/groups/admin2
 
 curl -X GET http://localhost:5000/users/test05
 curl -X GET http://localhost:5000/users/test02
 curl -X GET http://localhost:5000/users/test03
 curl -X GET http://localhost:5000/groups/admin
 curl -X GET http://localhost:5000/groups/work
+curl -X GET http://localhost:5000/groups/nogroup
+
+echo "\n\nAll members are removed from the admin group. \n404 for deleting admin members again. \n404 for not finding group. \n404 for group that doesnt exist""

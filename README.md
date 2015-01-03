@@ -37,7 +37,13 @@ The source code is stored in a public git repository.
 
     $ python app.py
 
-<h3> Sample requests:
+<h3> Test Script:
+
+There is a bash script with curl commands in the repos **bin** directory
+
+   $ testapp.sh
+
+<h3> Sample Requests:
 
 **GET /users/_userid_**
 * 200 - OK
