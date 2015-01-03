@@ -13,6 +13,7 @@ The source code is stored in a public git repository.
 <h4> Create a deployment directory:
 
     $ mkdir deploy
+    $ cd deploy
 
 <h4> Create a python vitural environment and activate it
 
