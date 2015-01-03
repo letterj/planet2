@@ -81,7 +81,7 @@ curl -X GET http://localhost:5000/users/test03
 curl -X GET http://localhost:5000/groups/admin
 curl -X GET http://localhost:5000/groups/work
 
-echo "\n\nUser test01 should be deleted then a not found request.\n\n"
+echo -e "\n\nUser test01 should be deleted then a not found request.\n\n"
 
 # Happy Path
 curl -X POST http://localhost:5000/users/test05 \
@@ -90,16 +90,20 @@ curl -X POST http://localhost:5000/users/test05 \
 
 curl -X PUT http://localhost:5000/groups/admin \
     -H "Content-Type: application/json" \
-    -d '{"users" : ["test05", "test03"]}'
+    -d '{"members" : ["test05", "test03"]}'
 
-# Group Put Not Found and User Not Found
+# Group Put Not Found, Required field "members" and User Not Found
 curl -X PUT http://localhost:5000/groups/admin2 \
     -H "Content-Type: application/json" \
-    -d '{"users" : ["test05", "test03"]}'
+    -d '{"members" : ["test05", "test03"]}'
 
 curl -X PUT http://localhost:5000/groups/admin \
     -H "Content-Type: application/json" \
     -d '{"users" : ["test01", "test03"]}'
+
+curl -X PUT http://localhost:5000/groups/admin \
+    -H "Content-Type: application/json" \
+    -d '{"members" : ["test05", "test03", "test99"]}'
 
 curl -X GET http://localhost:5000/users/test05
 curl -X GET http://localhost:5000/users/test02
@@ -107,7 +111,7 @@ curl -X GET http://localhost:5000/users/test03
 curl -X GET http://localhost:5000/groups/admin
 curl -X GET http://localhost:5000/groups/work
 
-echo -e "\n\nUser test05 added and then placed into the admin group. Test PUT Group and User not found.\n\n"
+echo -e "\n\nUser test05 added and then placed into the admin group. \nTest required field. \nTest PUT Group and User not found.\n\n"
 
 # Happy Path
 curl -X DELETE http://localhost:5000/groups/admin
