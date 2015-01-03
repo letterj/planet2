@@ -44,7 +44,7 @@ class UsersAPI(Resource):
         data = {}
 	glist = []
 
-	u = session.query(User).filter(User.userid == userid).limit(1)
+	u = session.query(User).filter(User.userid == userid).all()
 	if not u:
             abort(404, message="User {} doesn't exist".format(userid))
         ug = session.query(UserGroups).filter(UserGroups.userid == userid).all()
