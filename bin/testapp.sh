@@ -36,7 +36,7 @@ curl -X GET http://localhost:5000/users/test10
 curl -X GET http://localhost:5000/groups/admin
 curl -X GET http://localhost:5000/groups/work
 
-echo "\n\nTwo groups and Three users should be created. \nPlus a 404 to great a group and user that already exist and put with group not found.\n\n"
+echo -e "\n\nTwo groups and Three users should be created. \nPlus a 404 to great a group and user that already exist and put with group not found.\n\n"
 
 # Happy Path
 curl -X PUT http://localhost:5000/users/test01 \
@@ -67,7 +67,7 @@ curl -X GET http://localhost:5000/users/test03
 curl -X GET http://localhost:5000/groups/admin
 curl -X GET http://localhost:5000/groups/work
 
-echo "\n\nUsers test01 and test03 should have their names updated. Required fields test\n\n"
+echo -e "\n\nUsers test01 and test03 should have their names updated. Required fields test\n\n"
 
 # Happy Path
 curl -X DELETE http://localhost:5000/users/test01
@@ -107,7 +107,7 @@ curl -X GET http://localhost:5000/users/test03
 curl -X GET http://localhost:5000/groups/admin
 curl -X GET http://localhost:5000/groups/work
 
-echo "\n\nUser test05 added and then placed into the admin group. Test PUT Group and User not found.\n\n"
+echo -e "\n\nUser test05 added and then placed into the admin group. Test PUT Group and User not found.\n\n"
 
 # Happy Path
 curl -X DELETE http://localhost:5000/groups/admin
@@ -122,4 +122,4 @@ curl -X GET http://localhost:5000/groups/admin
 curl -X GET http://localhost:5000/groups/work
 curl -X GET http://localhost:5000/groups/nogroup
 
-echo "\n\nAll members are removed from the admin group. \n404 for deleting admin members again. \n404 for not finding group. \n404 for group that doesnt exist""
+echo -e "\n\nAll members are removed from the admin group. \n404 for deleting admin members again. \n404 for not finding group. \n404 for group that doesnt exist""
